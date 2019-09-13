@@ -1,0 +1,88 @@
+<html>
+<head>
+	
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>	
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+    <script type="text/javascript" src="{{ url_for('static', filename = 'sell.js') }}"></script>
+
+    <script>
+        results = {{results|tojson}}
+        username = {{username|tojson}}
+        number = {{number|tojson}}
+    </script>
+
+    <style>
+
+		#main_container{
+			width: 100%;
+		}
+
+        #title{
+            width: 100%;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        #info{
+            text-align: center;
+        }
+
+        #box{
+            width: 60%;
+            margin: 5% 20% 0 20%;
+            height: 100px;
+        }
+
+        #username{
+            margin: 0;
+            width: 100%;
+            float: left
+        }
+        #number{
+            margin: 0;
+            width: 100%;
+            float: left
+        }
+
+        #button{
+            margin: 0;
+            width: 20%;
+        }
+
+        .result{
+            margin-left: 10%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="main_container">
+        <a href="/">
+            <div id="title">
+                <h1>WatchList</h1>      
+            </div> 
+        </a>
+        <div id="info">
+            1) Enter username 
+            <br/>
+            2) Enter the ID number of the listing below and click "Update", or click "New Listing"
+        </div>
+        <div id="box">
+            <input id=username type="text" name="username" placeholder="Username"/>
+            <input id=number type="text" name="number" placeholder="ID Number"/>
+            <button id=button type="submit">Update</button>
+            <button id=new_listing type="submit">New Listing</button>
+        </div>
+
+        <div id="results">
+        </div>
+    </div>
+
+</body>
+
+</html>

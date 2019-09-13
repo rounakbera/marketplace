@@ -1,0 +1,110 @@
+<html>
+<head>
+	
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>	
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+    <script type="text/javascript" src="{{ url_for('static', filename = 'search.js') }}"></script>
+
+    <script>
+        results = {{results|tojson}}
+        term = {{term|tojson}}
+        number = {{number|tojson}}
+    </script>
+
+    <style>
+
+		#main_container{
+			width: 100%;
+		}
+
+        #title{
+            width: 100%;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        .info{
+            text-align: center;
+        }
+
+        #search{
+            width: 60%;
+            margin: 5% 20% 0 20%;
+            height: 100px;
+        }
+
+        #box{
+            margin: 0;
+            width: 75%;
+            float: left
+        }
+
+        #button{
+            margin: 0;
+            width: 20%;
+            float: right
+        }
+
+        .result{
+            margin-left: 10%;
+        }
+
+        #modal{
+            position: absolute;
+            top:20%;
+            left:30%;
+            height: 150px;
+            width: 40%;
+            background-color: lightgray;
+            display: block
+        }
+
+        #msg{
+            width:90%;
+            margin:5%;
+        }
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="modal">
+        <div id=msg_container>
+            <div class=info>Messaging seller</div>
+            <textarea id="msg" type="text" name="email"></textarea>
+            <br/>
+            <button id="send" type="submit" name="send">Send</button>
+        </div>
+        <button id="close">Close</button>
+    </div>
+    <div class="main_container">
+        <a href="/">
+            <div id="title">
+                <h1>WatchList</h1>      
+            </div> 
+        </a>
+        <div class="info">
+            1)Enter your query below and click "Search"
+            <br/>
+            2)Click an entry to send a message to the seller
+        </div>
+        <div id="search">
+            <form action="/search" method="get">
+                <input id=box type="text" name="term">
+                <button id=button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div id="results">
+        </div>
+    </div>
+
+</body>
+
+</html>
