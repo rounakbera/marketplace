@@ -17,6 +17,9 @@
     </script>
 
     <style>
+        body{
+            background-color: white;
+        }
 
         #header{
             margin-top: 2.3rem;
@@ -32,6 +35,10 @@
 
         h2,h3,h4{
             font-family: 'PT Sans', sans-serif;
+        }
+
+        h2{
+            color: #347CF5
         }
 
         p{
@@ -52,23 +59,20 @@
 
         #title{
             font-family: 'Josefin Sans', serif;
-            font-size: 4rem;
+            font-size: 3.5rem;
+            transition: all 0.3s ease;
         }
 
         #titlecont{
             display: inline-block;
-            width: 35%;
+            width: 40%;
             margin-left: 15%;
             margin-top: 1rem;
         }
 
-        #title{
-            font-size: 4rem;
-        }
-
 		#button_container{
             display: inline-block;
-			width: 34%;
+			width: 29%;
             margin-right: 15%;
             text-align: right;
             font-size: 1.5rem;
@@ -89,20 +93,29 @@
 
         #box{
             margin: 0;
-            width: 75%;
-            float: left
+            width: 77%;
+            float: left;
+            border: 2px solid #347cf5;
+            border-radius: 5px;
+            padding: 2px;
         }
 
         #button{
             margin: 0;
             width: 20%;
-            float: right
+            float: right;
+            border-radius: 5px;
         }
 
         .result{
             margin-left: 15%;
             width: 70%;
             padding: 15px;
+            transition: all 0.3s ease;;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 50px;
+            background-color: #fff2e0;
         }
 
         #modal{
@@ -147,9 +160,42 @@
         .button2{
             font-size: 1.5rem;
             margin-top: -2.2rem;
-            font-family: 'Josefin Sans', sans-serif
+            font-family: 'Josefin Sans', sans-serif;
+            transition: all 0.3s ease;
         }
-
+        .desc{
+            width: 70%;
+        }
+        #instruct{
+            border-radius: 10px;
+            text-align: center;
+            margin-left: 25%;
+            margin-top: 60px;
+            width: 50%;
+            padding: 20px;
+            background-color: #347CF5;
+            color: white;
+            font-size: 1.3rem;
+            font-family: 'PT Sans', sans-serif;
+            margin-bottom: -20px;
+        }
+        .vote{
+            position: absolute;
+            left: 100px;
+            z-index: 20;
+            margin: 15px;
+            margin-top: -150px;
+            color: rgb(66, 66, 66);
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            background-color: #347CF5;
+            color:white;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
     </style>
 
 </head>
@@ -160,7 +206,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Send a message to the seller</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Send a message to the suggester</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -179,7 +225,7 @@
         <div id="header">
             <a  id="titlecont" href="/">
                 <div id="title">
-                    WatchList.nyc
+                    <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> Suggestions & Ideas
                 </div> 
             </a>
     
@@ -187,14 +233,17 @@
             <div id="button_container">
                 <a href="sell">
                     <div class="button2 btn btn-primary">
-                        Selling Watches?
+                        Submit a suggestion!
                     </div>
                 </a>
             </div>
         </div>
+        <div id="instruct">
+            Search through suggestions people have made.<br/>You can also click a suggestion to send a message to the writer.<br/>Click the number to the left of an entry to vote for it.
+        </div>
         <div id="search">
             <form action="/" method="get">
-                <input id=box type="text" name="term">
+                <input id=box type="text" name="term" placeholder="Enter query...">
                 <button id=button type="submit">Search</button>
             </form>
         </div>

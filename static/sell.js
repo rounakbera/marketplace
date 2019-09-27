@@ -25,7 +25,7 @@ var display_results = function(results){
     console.log(results)
     {$.each(results, function(i, result){
             var row = $("<br/><div class='result' id = " + result["number"] + ">")
-            var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h4>Movement: " + result["movement"] + "</h4><h4>Price: $" + result["price"] + "</h4>"
+            var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h4>Description:</h4><div class=desc>" + result["movement"] + "</div>"
             if (result["messages"] != null){
                 toAdd += "<h4>Messages:</h4><div class=msglist>"
                 result["messages"].forEach(element => {
@@ -34,18 +34,14 @@ var display_results = function(results){
                 });
                 toAdd+="</div>"
             }
-            if (result["img"] != null){
-                toAdd += "<div class=imgDiv>"
-                result["img"].forEach(element => {
-                    toAdd += "<img class=newImg src=" + element + ">"
-                })
-                toAdd += "</div>"
-            }
+            toAdd += "<div class=imgDiv>"
+            toAdd += "<img class=newImg src=" + result["img"] + ">"
+            toAdd += "</div>"
             toAdd += "</div><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button>"
             row.append(toAdd);
             $(row).hover(
-                function(){$(row).css("background-color","lightgray")},
-                function(){$(row).css("background-color","white")}
+                function(){$(row).css("background-color","#fffbf5")},
+                function(){$(row).css("background-color","#fff2e0")}
             )
             $("#results").append(row)
         }
@@ -60,11 +56,11 @@ var display_results = function(results){
             if (w["number"] == id){
                 var model = w["model"]
                 var movement = w["movement"]
-                var price = w["price"]
+                var price = w["img"]
             }
         }
         console.log(model + movement + price)
-        var toAdd = "Model: <input id=model type=text name=model value='" + model + "'><br/>Movement: <input id=movement type=text name=movement value=" + movement + "><br/>Price ($): <input id=price type=text name=price value=" + price + ">"
+        var toAdd = "Issue: <input id=model type=text name=model value=\"" + model + "\"><br/>Description: <input id=movement type=text name=movement value=\"" + movement + "\"><br/>Image URL: <input id=price type=text name=price value=" + price + ">"
         $("#modal-body").empty()
         $("#modal-body").append(toAdd)
         $("#updateModal").modal('show')
@@ -88,7 +84,7 @@ var login = function(){
                 results = data
                 if (results.length == 0){
                     $("#results").empty()
-                    $("#results").append("<div class='result'><h3>The username had no listings</h3></div>")
+                    $("#results").append("<div class='result'><h3>The username had no submissions</h3></div>")
                 }
                 else{
                     display_results(data)
@@ -104,7 +100,7 @@ var login = function(){
     }
     else{
         $("#error-body").empty()
-        $("#error-body").append("Enter a username before getting listings.")
+        $("#error-body").append("Enter a username before getting your submissions.")
         $("#errorModal").modal('show')
     }
 }
@@ -124,7 +120,7 @@ var update = function(){
                 results = data
                 number = -1
                 display_results(results)
-                $("#"+id).append("<div class='result'><h3>Listing updated</h3></div>")
+                $("#"+id).append("<div class='result'><h3>Submission updated</h3></div>")
             },
             error: function(request, status, error){
                 console.log("Error");
@@ -148,7 +144,7 @@ var deleted = function(id){
             results = data
             number = -1
             $("#" + id).empty()
-            $("#" + id).append("<div class='result'><h3>Listing deleted</h3></div>")
+            $("#" + id).append("<div class='result'><h3>Submission deleted</h3></div>")
         },
         error: function(request, status, error){
             console.log("Error");
@@ -164,13 +160,13 @@ var new_listing = function(){
     console.log(username)
     if (username != ""){
         $("#newModal").modal('show')
-        var toAdd = "Model: <input id=model type=text name=model><br/>Movement: <input id=movement type=text name=movement><br/>Price ($): <input id=price type=text name=price>"
+        var toAdd = "Issue: <input id=model type=text name=model><br/>Description: <input id=movement type=text name=movement><br/>Image URL: <input id=price type=text name=price>"
         $("#new-modal-body").empty()
         $("#new-modal-body").append(toAdd)
     }
     else{
         $("#error-body").empty()
-        $("#error-body").append("Enter a username before creating a new listing.")
+        $("#error-body").append("Enter a username before creating a new submission.")
         $("#errorModal").modal('show')
     }
 }
@@ -179,7 +175,7 @@ var make_new = function(){
     var model = $("#model").val()
     var movement = $("#movement").val()
     var price = $("#price").val()
-    if (username != "" && model != "" && movement != "" && price != "" && !isNaN(price)){
+    if (username != "" && model != "" && movement != "" && price != ""){
         $.ajax({
             type: "POST",
             url: "sell",                
@@ -189,7 +185,7 @@ var make_new = function(){
             success: function(data){
                 result = data
                 number = -1
-                var toAdd = "<div class='result' id = " + result["number"] + "><h2>" + result["model"] + "</h2><br/><h3>Movement: " + result["movement"] + "</h3><h3>$" + result["price"] + "</h3><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button></div>"
+                var toAdd = "<div class='result' id = " + result["number"] + "><h2>" + result["model"] + "</h2><br/><h3>Movement: " + result["movement"] + "</h3><h3>$" + result["img"] + "</h3><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button></div>"
                 $("#results").prepend(toAdd)
                 $("#"+result["number"]).append("<div class='result'><h3>Listing created</h3></div>")
             },
@@ -203,7 +199,7 @@ var make_new = function(){
     }
     else{
         $("#error-body").empty()
-        $("#error-body").append("Enter a valid model, movement, and price (must be a number).")
+        $("#error-body").append("Enter a valid issue, description, and an image URL.")
         $("#errorModal").modal('show')
     }
 }

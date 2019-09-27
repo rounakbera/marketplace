@@ -37,6 +37,29 @@ $(document).ready(function(){
         }
     }
     )
+    $(".vote").click(function(){
+        console.log(this.id.substring(4))
+        var number = parseInt(this.id.substring(4))
+        id = number
+        votes = parseInt(this.innerHTML) + 1
+        $.ajax({
+            type: "POST",
+            url: "",                
+            dataType : "json",
+            contentType: "application/json; charset=utf-8",
+            data : JSON.stringify({"votes": votes,"number": id}),
+            success: function(data){
+                $("#vote" + id).css("background-color","darkorange")
+                $("#vote" + id).html(votes)
+            },
+            error: function(request, status, error){
+                console.log("Error");
+                console.log(request)
+                console.log(status)
+                console.log(error)
+            }
+        })
+    })
 }
 )
 
@@ -45,20 +68,17 @@ var display_results = function(results){
     $("#box").attr("value", term)
     console.log(results)
     if (results.length == 0){
-        $("#results").append("<div class='result'><h3>No watches found</h3></div>")
+        $("#results").append("<div class='result'><h3>No suggestions found</h3></div>")
     }
     else {$.each(results, function(i, result){
             var row = $("<div class='result' id = " + result["number"] + ">")
-            var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h5>Movement: " + result["movement"] + "</h5><h5>Price: $" + result["price"] + "</h5><br/></div>"
-            if (result["img"] != null){
-                toAdd += "<div class=imgDiv>"
-                result["img"].forEach(element => {
-                    toAdd += "<img class=newImg src=" + element + ">"
-                })
-                toAdd += "</div>"
-            }
+            var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h4>Description:</h4><div class=desc>" + result["movement"] + "</div><br/></div><div class=imgDiv><img class=newImg src=" + result["img"] + "></div><div class=vote id=\"vote" + result["number"] + "\">" + result["votes"] + "</div></div>"
             $(row).append(toAdd)
-            $(row).click(function(){
+            $(row).on('click', function(e){
+                if (e.target.className === 'vote'){
+                    console.log("vote")
+                    return;
+                }
                 number = result["number"]
                 model = result["model"]
                 console.log(model)
@@ -66,9 +86,9 @@ var display_results = function(results){
                 $(row).css("background-color","darkgray")
             })
             $(row).hover(
-                function(){$(row).css("background-color","lightgray")},
-                function(){$(row).css("background-color","white")}
-            )
+                function(){$(row).css("background-color","#fffbf5")},
+                function(){$(row).css("background-color","#fff2e0")}
+            )            
             $("#results").append(row)
         }
         )

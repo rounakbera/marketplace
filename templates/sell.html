@@ -17,6 +17,10 @@
     </script>
 
     <style>
+        body{
+            background-color: white
+        }
+
         #header{
             margin-top: 2.3rem;
             margin-bottom: -2.5rem;
@@ -27,6 +31,10 @@
 
         h1{
             font-family: 'Josefin Sans', serif;
+        }
+
+        h2{
+            color: #347CF5
         }
 
         h2,h3,h5{
@@ -44,19 +52,20 @@
 
         #titlecont{
             display: inline-block;
-            width: 35%;
+            width: 40%;
             margin-left: 15%;
             margin-top: 1rem;
         }
 
         #title{
             font-family: 'Josefin Sans', serif;
-            font-size: 4rem;
+            font-size: 3.5rem;
+            transition: all 0.3s ease;
         }
 
 		#button_container{
             display: inline-block;
-			width: 34%;
+			width: 29%;
             margin-right: 15%;
             text-align: right;
             font-size: 1.5rem;
@@ -76,7 +85,10 @@
         #username{
             margin: 0;
             width: 100%;
-            float: left
+            float: left;
+            border: 2px solid #347cf5;
+            border-radius: 5px;
+            padding: 2px;
         }
         #number{
             margin: 0;
@@ -87,12 +99,15 @@
         button{
             margin: 10px;
             width: 20%;
+            border-radius: 5px;
         }
 
         .result{
             margin-left: 15%;
             width:70%;
             padding: 15px;
+            transition: all 0.3s ease;
+            background-color: #fff2e0;
         }
 
         .details{
@@ -101,7 +116,7 @@
 
         .msglist{
             margin-left: 5%;
-            width:80%;
+            width:60%;
         }
 
         .imgDiv{
@@ -120,8 +135,24 @@
             font-size: 1.5rem;
             margin-top: -2.2rem;
             font-family: 'Josefin Sans', serif;
+            transition: all 0.3s ease;
         }
-
+        .desc{
+            width: 70%;
+        }
+        #instruct{
+            border-radius: 10px;
+            text-align: center;
+            margin-left: 25%;
+            margin-top: 60px;
+            width: 50%;
+            padding: 20px;
+            background-color: #347CF5;
+            color: white;
+            font-size: 1.3rem;
+            font-family: 'PT Sans', sans-serif;
+            margin-bottom: -20px;
+        }
     </style>
 
 </head>
@@ -151,7 +182,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New Listing</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">New Suggestion</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -187,7 +218,7 @@
         <div id="header">
         <a  id="titlecont" href="/">
             <div id="title">
-                WatchList.nyc
+                <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> Suggestions & Ideas
             </div> 
         </a>
 
@@ -195,15 +226,18 @@
         <div id="button_container">
             <a href="/">
                 <div class="button2 btn btn-primary">
-                    Buying Watches?
+                    View suggestions!
                 </div>
             </a>
         </div>
     </div>
+    <div id="instruct">
+            Enter your previously used username or a new username below. <br/> You can click Login to get a list of past suggestions and update/delete them. </br> You can also click New Suggestion to submit a new idea.
+        </div>
         <div id="box">
             <input id=username type="text" name="username" placeholder="Username"/>
             <button id=button type="submit">Login</button>
-            <button id=new_listing type="button">New Listing</button>
+            <button id=new_listing type="button">New Suggestion</button>
         </div>
 
         <div id="results">
