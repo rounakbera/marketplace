@@ -75,6 +75,8 @@ def search():
     term = request.args.get('term', None)
     jsons = request.get_json()
     if jsons != None:
+        with open('data.json') as f:
+            watches = json.load(f)
         if jsons.get("votes") != None:
             num = jsons.get("number")
             for w in watches:
@@ -115,9 +117,13 @@ def sell():
     global watches
     global username
     global number
+    with open('data.json') as f:
+        watches = json.load(f)
     jsons = request.get_json()
     if jsons != None:
         if jsons.get("username") != None and jsons.get("number") == None and jsons.get("model") == None:
+            with open('data.json') as f:
+                watches = json.load(f)
             results = []
             username = jsons.get("username")
             for w in watches:
@@ -126,6 +132,8 @@ def sell():
                     print("getting " + str(w))
             return jsonify(results)
         elif jsons.get("number") != None and jsons.get("model") != None:
+            with open('data.json') as f:
+                watches = json.load(f)
             num = int(jsons.get("number"))
             for w in watches:
                 if w["number"] == num:
@@ -143,6 +151,8 @@ def sell():
             print(str(results))
             return jsonify(results)
         elif jsons.get("number") != None and jsons.get("username") == None:
+            with open('data.json') as f:
+                watches = json.load(f)
             num = int(jsons.get("number"))
             print("deleting" + str(num))
             for w in watches:
@@ -154,6 +164,8 @@ def sell():
                 json.dump(watches, f)
             return jsonify(watches)
         elif jsons.get("number") == None and jsons.get("model") != None:
+            with open('data.json') as f:
+                watches = json.load(f)
             num = watches[len(watches)-1]["number"] + 1
             watches.append({
                 "number": num,
