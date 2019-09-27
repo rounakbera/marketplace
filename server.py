@@ -1,6 +1,7 @@
-from flask import Flask
-from flask import render_template
-from flask import Response, request, jsonify
+import json
+
+from flask import Flask, Response, jsonify, render_template, request
+
 app = Flask(__name__)
 
 term = ""
@@ -24,8 +25,6 @@ watches = [
         "movement": "It would be useful for us to have a campus-wide calendar with public events listed on it. Maybe even an app to make it more accessible",
         "model": "Event Calendar?",
         "img": "https://staticx.ibncollege.com/wcsstore/ExtendedSitesCatalogAssetStore/706_100_20_347318721_NI/images/LARGEIMAGE_1661950.jpg",
-        "messages": [
-        ],
         "votes": 8
     },
     {
@@ -71,23 +70,29 @@ watches = [
 def search():
     global watches
     global term
+    with open('data.json') as f:
+        watches = json.load(f)
     term = request.args.get('term', None)
-    json = request.get_json()
-    if json != None:
-        if json.get("votes") != None:
-            num = json.get("number")
+    jsons = request.get_json()
+    if jsons != None:
+        if jsons.get("votes") != None:
+            num = jsons.get("number")
             for w in watches:
                 if w["number"] == num:
-                    w["votes"] = json.get("votes")
+                    w["votes"] = jsons.get("votes")
+            with open('data.json', 'w') as f:
+                json.dump(watches, f)
             return jsonify(watches)
         else:
-            num = json.get("number")
+            num = jsons.get("number")
             for w in watches:
                 if w["number"] == num:
                     if "messages" not in w.keys():
-                        w["messages"] = [json.get("msg")]
+                        w["messages"] = [jsons.get("msg")]
                     else:
-                        w["messages"].append(json.get("msg"))
+                        w["messages"].append(jsons.get("msg"))
+            with open('data.json', 'w') as f:
+                json.dump(watches, f)
             return jsonify(watches)
     if term != None:
         results = list(sorted(list(filter(searching, watches)), key = lambda i: i["votes"],reverse=True))
@@ -110,48 +115,56 @@ def sell():
     global watches
     global username
     global number
-    json = request.get_json()
-    if json != None:
-        if json.get("username") != None and json.get("number") == None and json.get("model") == None:
+    jsons = request.get_json()
+    if jsons != None:
+        if jsons.get("username") != None and jsons.get("number") == None and jsons.get("model") == None:
             results = []
-            username = json.get("username")
+            username = jsons.get("username")
             for w in watches:
                 if w["id"] == username:
                     results.append(w)
                     print("getting " + str(w))
             return jsonify(results)
-        elif json.get("number") != None and json.get("model") != None:
-            num = int(json.get("number"))
+        elif jsons.get("number") != None and jsons.get("model") != None:
+            num = int(jsons.get("number"))
             for w in watches:
                 if w["number"] == num:
-                    w["model"] = json.get("model")
-                    w["movement"] = json.get("movement")
-                    w["price"] = json.get("price")
+                    w["model"] = jsons.get("model")
+                    w["movement"] = jsons.get("movement")
+                    w["img"] = jsons.get("price")
+            with open('data.json', 'w') as f:
+                json.dump(watches, f)
             results = []
-            username = json.get("username")
+            username = jsons.get("username")
             for w in watches:
                 if w["id"] == username:
                     results.append(w)
                     print("getting " + str(w))
+            print(str(results))
             return jsonify(results)
-        elif json.get("number") != None and json.get("username") == None:
-            num = int(json.get("number"))
+        elif jsons.get("number") != None and jsons.get("username") == None:
+            num = int(jsons.get("number"))
             print("deleting" + str(num))
             for w in watches:
                 print(w["number"])
                 if w["number"] == num:
                     watches.remove(w)
                     print('removed')
+            with open('data.json', 'w') as f:
+                json.dump(watches, f)
             return jsonify(watches)
-        elif json.get("number") == None and json.get("model") != None:
+        elif jsons.get("number") == None and jsons.get("model") != None:
             num = watches[len(watches)-1]["number"] + 1
             watches.append({
                 "number": num,
-                "model": json.get("model"),
-                "movement": json.get("movement"),
-                "price": json.get("price"),
-                "id": json.get("username")
+                "model": jsons.get("model"),
+                "movement": jsons.get("movement"),
+                "img": jsons.get("price"),
+                "id": jsons.get("username"),
+                "votes": 0
             })
+            with open('data.json', 'w') as f:
+                json.dump(watches, f)
             return jsonify(watches[len(watches)-1])        
         else:
             return jsonify([])

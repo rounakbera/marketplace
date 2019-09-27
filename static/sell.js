@@ -16,7 +16,7 @@ $(document).ready(function(){
         make_new()
     })
 
-    var id
+    var id = -1
     var username
 })
 
@@ -115,11 +115,12 @@ var update = function(){
             url: "sell",                
             dataType : "json",
             contentType: "application/json; charset=utf-8",
-            data : JSON.stringify({"number": id, "model": model, "movement": movement, "price": price, "username": username}),
+            data: JSON.stringify({"number": id, "model": model, "movement": movement, "price": price, "username": username}),
             success: function(data){
                 results = data
-                number = -1
+                console.log(results)
                 display_results(results)
+                number = -1
                 $("#"+id).append("<div class='result'><h3>Submission updated</h3></div>")
             },
             error: function(request, status, error){
@@ -185,9 +186,14 @@ var make_new = function(){
             success: function(data){
                 result = data
                 number = -1
-                var toAdd = "<div class='result' id = " + result["number"] + "><h2>" + result["model"] + "</h2><br/><h3>Movement: " + result["movement"] + "</h3><h3>$" + result["img"] + "</h3><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button></div>"
-                $("#results").prepend(toAdd)
-                $("#"+result["number"]).append("<div class='result'><h3>Listing created</h3></div>")
+                var row = $("<br/><div class='result' id = " + result["number"] + ">")
+                var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h4>Description:</h4><div class=desc>" + result["movement"] + "</div>"
+                toAdd += "<div class=imgDiv>"
+                toAdd += "<img class=newImg src=" + result["img"] + ">"
+                toAdd += "</div><div class=vote id=\"vote" + result["number"] + "\">" + result["votes"] + "</div>"
+                toAdd += "</div><div class=info><h3>Listing created</h3></div>"
+                row.append(toAdd);
+                $("#results").prepend(row)
             },
             error: function(request, status, error){
                 console.log("Error");

@@ -20,7 +20,7 @@ $(document).ready(function(){
         if (msg != ""){
             $.ajax({
                 type: "POST",
-                url: "",                
+                url: "/",                
                 dataType : "json",
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify({"number": number, "msg": msg}),
@@ -38,6 +38,10 @@ $(document).ready(function(){
     }
     )
     $(".vote").click(function(){
+        console.log($(this).css("background-color"))
+        if($(this).css("background-color") === "rgb(255, 140, 0)"){
+            return;
+        }
         console.log(this.id.substring(4))
         var number = parseInt(this.id.substring(4))
         id = number
