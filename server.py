@@ -112,7 +112,7 @@ watches = [
         "number": 10,
         "id": "Rounak",
         "movement": "automatic",
-        "model": "Nomos Glashütte Club Campus",
+        "model": "Nomos Glashutte Club Campus",
         "price": 1200,
         "img":[
             "https://www.ablogtowatch.com/nomos-club-campus-watches/nomos-glashutte-club-campus-ablogtowatch-9/"
