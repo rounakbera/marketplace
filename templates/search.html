@@ -1,11 +1,14 @@
 <html>
 <head>
-	
-	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>	
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ url_for('static', filename = 'search.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|PT+Sans&display=swap" rel="stylesheet">
 
     <script>
         results = {{results|tojson}}
@@ -15,17 +18,66 @@
 
     <style>
 
-		#main_container{
-			width: 100%;
-		}
-
-        #title{
-            width: 100%;
-            text-align: center;
-            font-size: 3rem;
+        #header{
+            margin-top: 2.3rem;
+            margin-bottom: -2.5rem;
+        }
+        button{
+            font-family: 'PT Sans', sans-serif;
         }
 
+        h1{
+            font-family: 'Josefin Sans', serif;
+        }
+
+        h2,h3,h4{
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        p{
+            font-family: 'PT Sans', sans-serif;
+        }
+
+		#main_container{
+			width: 100%;
+            font-family: 'PT Sans', sans-serif; 
+		}
+
+        #titlecont{
+            display: inline-block;
+            width: 35%;
+            margin-left: 15%;
+            margin-top: 1rem;
+        }
+
+        #title{
+            font-family: 'Josefin Sans', serif;
+            font-size: 4rem;
+        }
+
+        #titlecont{
+            display: inline-block;
+            width: 35%;
+            margin-left: 15%;
+            margin-top: 1rem;
+        }
+
+        #title{
+            font-size: 4rem;
+        }
+
+		#button_container{
+            display: inline-block;
+			width: 34%;
+            margin-right: 15%;
+            text-align: right;
+            font-size: 1.5rem;
+		}
+
         .info{
+            text-align: center;
+        }
+        .info2{
             text-align: center;
         }
 
@@ -48,10 +100,19 @@
         }
 
         .result{
-            margin-left: 10%;
+            margin-left: 15%;
+            width: 70%;
+            padding: 15px;
         }
 
         #modal{
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.6)
+        }
+
+        #modalcontained{
             position: absolute;
             top:20%;
             left:30%;
@@ -66,7 +127,28 @@
             margin:5%;
         }
 
+        .details{
+            margin-left:5%;
+            width:70%;
+        }
 
+        .imgDiv{
+            float: right;
+            display: inline-flex;
+            height: 150px;
+            margin-top: -140px;
+        }
+
+        .newImg{
+            float:right;
+            height: 150px;
+        }
+
+        .button2{
+            font-size: 1.5rem;
+            margin-top: -2.2rem;
+            font-family: 'Josefin Sans', sans-serif
+        }
 
     </style>
 
@@ -74,28 +156,44 @@
 
 <body>
 
-    <div id="modal">
-        <div id=msg_container>
-            <div class=info>Messaging seller</div>
-            <textarea id="msg" type="text" name="email"></textarea>
-            <br/>
-            <button id="send" type="submit" name="send">Send</button>
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Send a message to the seller</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="new-modal-body">
+                            <textarea id='msg' type='text' name='email'></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="send" type="submit" class="btn btn-primary" data-dismiss="modal">Send</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button id="close">Close</button>
-    </div>
     <div class="main_container">
-        <a href="/">
-            <div id="title">
-                <h1>WatchList</h1>      
-            </div> 
-        </a>
-        <div class="info">
-            1)Enter your query below and click "Search"
-            <br/>
-            2)Click an entry to send a message to the seller
+        <div id="header">
+            <a  id="titlecont" href="/">
+                <div id="title">
+                    WatchList.nyc
+                </div> 
+            </a>
+    
+    
+            <div id="button_container">
+                <a href="sell">
+                    <div class="button2 btn btn-primary">
+                        Selling Watches?
+                    </div>
+                </a>
+            </div>
         </div>
         <div id="search">
-            <form action="/search" method="get">
+            <form action="/" method="get">
                 <input id=box type="text" name="term">
                 <button id=button type="submit">Search</button>
             </form>

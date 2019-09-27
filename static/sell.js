@@ -6,49 +6,89 @@ $(document).ready(function(){
     
     $("#new_listing").click(function(){
 		new_listing()
-	})
+    })
+    
+    $("#update").click(function(){
+        update()
+    })
 
+    $("#createNew").click(function(){
+        make_new()
+    })
+
+    var id
+    var username
 })
 
 var display_results = function(results){
     $("#results").empty()
     console.log(results)
-    var row = $("<div class='result'>")
-    var toAdd = "<input id=model type=text name=model value='" + results["model"] + "'><input id=movement type=text name=movement value=" + results["movement"] + "><input id=price type=text name=price value=" + results["price"] + "><br/><button id=update type=submit>Update</button><button id=deleted type=submit>Delete</button>" 
-    if (results["messages"] != null){
-        toAdd += "<h3>Messages</h3>"
-        results["messages"].forEach(element => {
-            toAdd += "<br/>"
-            toAdd += element
-            toAdd += "<br/>"
-        });
+    {$.each(results, function(i, result){
+            var row = $("<br/><div class='result' id = " + result["number"] + ">")
+            var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h4>Movement: " + result["movement"] + "</h4><h4>Price: $" + result["price"] + "</h4>"
+            if (result["messages"] != null){
+                toAdd += "<h4>Messages:</h4><div class=msglist>"
+                result["messages"].forEach(element => {
+                    toAdd += element
+                    toAdd += "<br/>"
+                });
+                toAdd+="</div>"
+            }
+            if (result["img"] != null){
+                toAdd += "<div class=imgDiv>"
+                result["img"].forEach(element => {
+                    toAdd += "<img class=newImg src=" + element + ">"
+                })
+                toAdd += "</div>"
+            }
+            toAdd += "</div><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button>"
+            row.append(toAdd);
+            $(row).hover(
+                function(){$(row).css("background-color","lightgray")},
+                function(){$(row).css("background-color","white")}
+            )
+            $("#results").append(row)
+        }
+        )
     }
-    $(row).append(toAdd)
-    $("#results").append(row)
-    $("#update").click(function(){
-        update()
+    $(".updated").click(function(){
+        console.log(this.id.substring(7))
+        var number = parseInt(this.id.substring(7))
+        id = number
+        for (w of results){
+            console.log(w)
+            if (w["number"] == id){
+                var model = w["model"]
+                var movement = w["movement"]
+                var price = w["price"]
+            }
+        }
+        console.log(model + movement + price)
+        var toAdd = "Model: <input id=model type=text name=model value='" + model + "'><br/>Movement: <input id=movement type=text name=movement value=" + movement + "><br/>Price ($): <input id=price type=text name=price value=" + price + ">"
+        $("#modal-body").empty()
+        $("#modal-body").append(toAdd)
+        $("#updateModal").modal('show')
     })
-    $("#deleted").click(function(){
-        deleted()
+    $(".deleted").click(function(){
+        console.log(this.id.substring(7))
+        deleted(this.id.substring(7))
     })
 }
 
 var login = function(){
-    var username = $("#username").val()
-    var num = $("#number").val()
-    if (username != "" && number != ""){
+    username = $("#username").val()
+    if (username != ""){
         $.ajax({
             type: "POST",
             url: "sell",                
             dataType : "json",
             contentType: "application/json; charset=utf-8",
-            data : JSON.stringify({"username": username,"number": num}),
+            data : JSON.stringify({"username": username}),
             success: function(data){
                 results = data
-                number = num
                 if (results.length == 0){
                     $("#results").empty()
-                    $("#results").append("<div class='result'><h3>The listing could not be found</h3></div>")
+                    $("#results").append("<div class='result'><h3>The username had no listings</h3></div>")
                 }
                 else{
                     display_results(data)
@@ -62,6 +102,11 @@ var login = function(){
             }
         })
     }
+    else{
+        $("#error-body").empty()
+        $("#error-body").append("Enter a username before getting listings.")
+        $("#errorModal").modal('show')
+    }
 }
 
 var update = function(){
@@ -74,12 +119,12 @@ var update = function(){
             url: "sell",                
             dataType : "json",
             contentType: "application/json; charset=utf-8",
-            data : JSON.stringify({"number": number, "model": model, "movement": movement, "price": price}),
+            data : JSON.stringify({"number": id, "model": model, "movement": movement, "price": price, "username": username}),
             success: function(data){
                 results = data
                 number = -1
-                $("#results").empty()
-                $("#results").append("<div class='result'><h3>Listing updated</h3></div>")
+                display_results(results)
+                $("#"+id).append("<div class='result'><h3>Listing updated</h3></div>")
             },
             error: function(request, status, error){
                 console.log("Error");
@@ -91,18 +136,19 @@ var update = function(){
     }
 }
 
-var deleted = function(){
+var deleted = function(id){
+    console.log("deleting " + id)
     $.ajax({
         type: "POST",
         url: "sell",                
         dataType : "json",
         contentType: "application/json; charset=utf-8",
-        data : JSON.stringify({"number": number}),
+        data : JSON.stringify({"number": id}),
         success: function(data){
             results = data
             number = -1
-            $("#results").empty()
-            $("#results").append("<div class='result'><h3>Listing deleted</h3></div>")
+            $("#" + id).empty()
+            $("#" + id).append("<div class='result'><h3>Listing deleted</h3></div>")
         },
         error: function(request, status, error){
             console.log("Error");
@@ -114,26 +160,26 @@ var deleted = function(){
 }
 
 var new_listing = function(){
-    var username = $("#username").val()
+    username = $("#username").val()
+    console.log(username)
     if (username != ""){
-        $("#results").empty()
-        var row = $("<div class='result'>")
-        var toAdd = "<input id=model type=text name=model placeholder='Model'><input id=movement type=text name=movement placeholder='Movement'><input id=price type=text name=price placeholder='Price'><br/><button id=make_new type=submit>Submit</button>" 
-        $(row).append(toAdd)
-        $("#results").append(row)
-        $("#make_new").click(function(){
-            make_new()
-        }
-        )
+        $("#newModal").modal('show')
+        var toAdd = "Model: <input id=model type=text name=model><br/>Movement: <input id=movement type=text name=movement><br/>Price ($): <input id=price type=text name=price>"
+        $("#new-modal-body").empty()
+        $("#new-modal-body").append(toAdd)
+    }
+    else{
+        $("#error-body").empty()
+        $("#error-body").append("Enter a username before creating a new listing.")
+        $("#errorModal").modal('show')
     }
 }
 
 var make_new = function(){
-    var username = $("#username").val()
     var model = $("#model").val()
     var movement = $("#movement").val()
     var price = $("#price").val()
-    if (username != "" && model != "" && movement != "" && price != ""){
+    if (username != "" && model != "" && movement != "" && price != "" && !isNaN(price)){
         $.ajax({
             type: "POST",
             url: "sell",                
@@ -141,11 +187,11 @@ var make_new = function(){
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({"username": username, "model": model, "movement": movement, "price": price}),
             success: function(data){
-                results = data
+                result = data
                 number = -1
-                $("#results").empty()
-                toAdd = "<div class='result'><h3>New listing created with username " + results[results.length-1]["id"] + " and ID number " + results[results.length-1]["number"] + "</h3></div>"
-                $("#results").append(toAdd)
+                var toAdd = "<div class='result' id = " + result["number"] + "><h2>" + result["model"] + "</h2><br/><h3>Movement: " + result["movement"] + "</h3><h3>$" + result["price"] + "</h3><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button></div>"
+                $("#results").prepend(toAdd)
+                $("#"+result["number"]).append("<div class='result'><h3>Listing created</h3></div>")
             },
             error: function(request, status, error){
                 console.log("Error");
@@ -154,5 +200,10 @@ var make_new = function(){
                 console.log(error)
             }
         })
+    }
+    else{
+        $("#error-body").empty()
+        $("#error-body").append("Enter a valid model, movement, and price (must be a number).")
+        $("#errorModal").modal('show')
     }
 }

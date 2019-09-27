@@ -1,12 +1,21 @@
 $(document).ready(function(){
-    $("#modal").hide()
-    $("#close").click(function(){
-        $("#modal").hide()
-        $("#msg_container").empty()
-        $("#msg_container").append("<div class=info>Messaging seller</div><textarea id='msg' type='text' name='email'></textarea><br/><button id='send' type='submit' name='send'>Send</button>")
-    }
-    )
+    models = []
+    results.forEach(element => {
+        models.push(element["model"])
+    })
+    console.log(models)
+    $("#box").autocomplete({
+        source: models
+    })
+    $('#box').keypress(function(e){
+        if(e.which == 13){//Enter key pressed
+            $('#button').click();//Trigger search button click event
+        }
+    });
+    display_results(results)
     $("#send").click(function(){
+        $("#" + number).css("background-color","white")
+        console.log("hello")
         var msg = $("#msg").val();
         if (msg != ""){
             $.ajax({
@@ -16,8 +25,7 @@ $(document).ready(function(){
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify({"number": number, "msg": msg}),
                 success: function(data){
-                    $("#msg_container").empty()
-                    $("#msg_container").append("<div class='info'><h3>Message sent!</h3></div>")
+                    $("#" + number).append("<div class='info'><h3>Message sent!</h3></div>")
                 },
                 error: function(request, status, error){
                     console.log("Error");
@@ -29,8 +37,8 @@ $(document).ready(function(){
         }
     }
     )
-    display_results(results)
-})
+}
+)
 
 var display_results = function(results){
     $("#results").empty()
@@ -40,14 +48,27 @@ var display_results = function(results){
         $("#results").append("<div class='result'><h3>No watches found</h3></div>")
     }
     else {$.each(results, function(i, result){
-            var row = $("<div class='result'>")
-            var toAdd = "<h2>" + result["model"] + "</h2><br/><h3>Movement: " + result["movement"] + "</h3><h3>$" + result["price"] + "</h3><br/>"
+            var row = $("<div class='result' id = " + result["number"] + ">")
+            var toAdd = "<h2>" + result["model"] + "</h2><div class=details><h5>Movement: " + result["movement"] + "</h5><h5>Price: $" + result["price"] + "</h5><br/></div>"
+            if (result["img"] != null){
+                toAdd += "<div class=imgDiv>"
+                result["img"].forEach(element => {
+                    toAdd += "<img class=newImg src=" + element + ">"
+                })
+                toAdd += "</div>"
+            }
             $(row).append(toAdd)
             $(row).click(function(){
-                console.log("clicked")
                 number = result["number"]
-                $("#modal").show()
+                model = result["model"]
+                console.log(model)
+                $('#messageModal').modal('show')
+                $(row).css("background-color","darkgray")
             })
+            $(row).hover(
+                function(){$(row).css("background-color","lightgray")},
+                function(){$(row).css("background-color","white")}
+            )
             $("#results").append(row)
         }
         )

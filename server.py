@@ -13,10 +13,14 @@ watches = [
         "movement": "automatic",
         "model": "Rolex Submariner",
         "price": 7500,
+        "img": [
+            "https://cdn.shopify.com/s/files/1/0044/0863/9561/products/Rolex_Gents_c._1998_Stainless_Submariner_7_425_525-0071_2000x.JPG?v=1538407695",
+            "https://cdn2.chrono24.com/images/uhren/images_78/s6/7782678_xxl.jpg?v=1540826328588"
+        ],
         "messages": [
-            "hello",
-            "hi"
-        ] 
+            "rounakbera@gmail.com",
+            "Hi, I'd like to buy this watch."
+        ]
     },
     {
         "number": 1,
@@ -24,8 +28,12 @@ watches = [
         "movement": "automatic",
         "model": "Rolex Day-Date II",
         "price": 4800,
+        "img": [
+"https://img-static.tradesy.com/item/23415832/rolex-day-date-ii-president-ii-18k-rose-gold-ref-218235-box-watch-0-1-960-960.jpg",
+            "https://www.crmjewelers.com/wp-content/uploads/218235BKCAP_7.jpg"
+        ],
         "messages": [
-            "bye"
+            "Would you be willing to go lower on the price?"
         ] 
     },
     {
@@ -33,35 +41,51 @@ watches = [
         "id": "Raymond",
         "movement": "automatic",
         "model": "Breitling Navitimer",
-        "price": 5900  
+        "price": 5900, 
+        "img": [
+            "https://cdn2.jomashop.com/media/catalog/product/b/r/breitling-navitimer-1-chronograph-automatic-silver-dial-mens-watch-a13324121g1x1--.jpg"
+        ],
     },
     {
         "number": 3,
         "id": "Rounak",
         "movement": "automatic",
         "model": "IWC Portofino",
-        "price": 3200  
+        "price": 3200,
+        "img": [
+            "https://b34959663f5a3997bd0d-2668915a1d3a077262c88fab6aa0aa02.ssl.cf3.rackcdn.com/17810324_1_640.jpg"
+        ],
     },
     {
         "number": 4,
         "id": "Luke",
         "movement": "automatic",
         "model": "Breitling Superocean",
-        "price": 6000  
+        "price": 6000,
+        "img": [
+            "https://www.ablogtowatch.com/wp-content/uploads/2019/03/Breitling-Superocean-Automatic-11-e1553206425585.jpg",
+            "https://cdn2.chrono24.com/images/uhren/images_12/s3/10008312_xxl.jpg?v=1546855671515"
+        ], 
     },
     {
         "number": 5,
         "id": "Raymond",
         "movement": "quartz",
         "model": "Grand Seiko SBGV207",
-        "price": 4500  
+        "price": 4500, 
+        "img": [
+            "https://cdn2.chrono24.com/images/uhren/images_92/s2/7326292_xxl.jpg?v=1541918049439"
+        ], 
     },
     {
         "number": 6,
         "id": "Arsalaan",
         "movement": "quartz",
         "model": "Citizen Eco-Drive One",
-        "price": 1500  
+        "price": 1500,
+        "img":[
+            "https://i.ytimg.com/vi/p9l38pGu9w4/maxresdefault.jpg"
+        ]
     },
     {
         "number": 7,
@@ -89,7 +113,10 @@ watches = [
         "id": "Rounak",
         "movement": "automatic",
         "model": "Nomos Glashütte Club Campus",
-        "price": 1200  
+        "price": 1200,
+        "img":[
+            "https://www.ablogtowatch.com/nomos-club-campus-watches/nomos-glashutte-club-campus-ablogtowatch-9/"
+        ]
     },
     {
         "number": 11,
@@ -152,7 +179,10 @@ watches = [
         "id": "Rounak",
         "movement": "automatic",
         "model": "Longines Legend Diver",
-        "price": 1800  
+        "price": 1800,
+        "img":[
+            "https://cdn2.chrono24.com/images/uhren/images_99/s4/7568499gross.jpg?v=1"
+        ]
     },
     {
         "number": 20,
@@ -166,7 +196,10 @@ watches = [
         "id": "Rounak",
         "movement": "automatic",
         "model": "Hamilton Khaki Pilot Pioneer",
-        "price": 1100  
+        "price": 1100,
+        "img":[
+            "https://www.fratellowatches.com/wp-content/uploads/2019/08/Hamilton-Khaki-Pilot-Pioneer-Mechanical-7-of-10-975x650.jpg"
+        ]  
     },
     {
         "number": 22,
@@ -227,11 +260,11 @@ watches = [
 ]
 
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+# @app.route('/')
+# def home():
+#     return render_template('home.html')
 
-@app.route('/search', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def search():
     global watches
     global term
@@ -248,6 +281,7 @@ def search():
         return jsonify(watches)
     if term != None:
         results = list(filter(searching, watches))
+        print(results)
         return render_template('search.html', results=results, term = term, number = -1)
     else:
         return render_template('search.html', results=watches, term = "", number = -1)
@@ -267,44 +301,47 @@ def sell():
     global number
     json = request.get_json()
     if json != None:
-        if json.get("username") != None and json.get("number") != None:
+        if json.get("username") != None and json.get("number") == None and json.get("model") == None:
+            results = []
             username = json.get("username")
-            number = int(json.get("number"))
             for w in watches:
-                if w["number"] == number:
-                    if w["id"] == username:
-                        results = w
-                        print("getting " + str(w))
-                        return jsonify(results)
-            else:
-                return jsonify([])
-        elif json.get("username") != None:
-            number = watches[-1]["number"] + 1
-            watches.append({
-                "number": number,
-                "id": json.get("username"),
-                "model": json.get("model"),
-                "movement": json.get("movement"),
-                "price": json.get("price")
-            })
-            print("creating " + str(watches[-1]))
-            return jsonify(watches)
-        elif json.get("model") != None:
-            number = int(json.get("number"))
+                if w["id"] == username:
+                    results.append(w)
+                    print("getting " + str(w))
+            return jsonify(results)
+        elif json.get("number") != None and json.get("model") != None:
+            num = int(json.get("number"))
             for w in watches:
-                if w["number"] == number:
+                if w["number"] == num:
                     w["model"] = json.get("model")
                     w["movement"] = json.get("movement")
                     w["price"] = json.get("price")
-                    print("updating " + str(w))
-            return jsonify(watches)
-        elif json.get("number") != None:
-            number = int(json.get("number"))
+            results = []
+            username = json.get("username")
             for w in watches:
-                if w["number"] == number:
-                    print("deleting " + str(w))
+                if w["id"] == username:
+                    results.append(w)
+                    print("getting " + str(w))
+            return jsonify(results)
+        elif json.get("number") != None and json.get("username") == None:
+            num = int(json.get("number"))
+            print("deleting" + str(num))
+            for w in watches:
+                print(w["number"])
+                if w["number"] == num:
                     watches.remove(w)
+                    print('removed')
             return jsonify(watches)
+        elif json.get("number") == None and json.get("model") != None:
+            num = watches[len(watches)-1]["number"] + 1
+            watches.append({
+                "number": num,
+                "model": json.get("model"),
+                "movement": json.get("movement"),
+                "price": json.get("price"),
+                "id": json.get("username")
+            })
+            return jsonify(watches[len(watches)-1])        
         else:
             return jsonify([])
     else:

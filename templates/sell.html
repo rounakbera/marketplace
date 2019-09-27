@@ -1,11 +1,14 @@
 <html>
 <head>
 	
-	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>	
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	
-    <script type="text/javascript" src="{{ url_for('static', filename = 'sell.js') }}"></script>
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>	
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'sell.js') }}"></script>
+        <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|PT+Sans&display=swap" rel="stylesheet">
 
     <script>
         results = {{results|tojson}}
@@ -14,19 +17,54 @@
     </script>
 
     <style>
+        #header{
+            margin-top: 2.3rem;
+            margin-bottom: -2.5rem;
+        }
+        button{
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        h1{
+            font-family: 'Josefin Sans', serif;
+        }
+
+        h2,h3,h5{
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        p{
+            font-family: 'PT Sans', sans-serif;
+        }
 
 		#main_container{
 			width: 100%;
+            font-family: 'PT Sans', sans-serif; 
 		}
 
-        #title{
-            width: 100%;
-            text-align: center;
-            font-size: 3rem;
+        #titlecont{
+            display: inline-block;
+            width: 35%;
+            margin-left: 15%;
+            margin-top: 1rem;
         }
 
-        #info{
-            text-align: center;
+        #title{
+            font-family: 'Josefin Sans', serif;
+            font-size: 4rem;
+        }
+
+		#button_container{
+            display: inline-block;
+			width: 34%;
+            margin-right: 15%;
+            text-align: right;
+            font-size: 1.5rem;
+		}
+
+        .info{
+            text-align: right;
+            width: 72%;
         }
 
         #box{
@@ -46,13 +84,42 @@
             float: left
         }
 
-        #button{
-            margin: 0;
+        button{
+            margin: 10px;
             width: 20%;
         }
 
         .result{
-            margin-left: 10%;
+            margin-left: 15%;
+            width:70%;
+            padding: 15px;
+        }
+
+        .details{
+            margin-left:5%;
+        }
+
+        .msglist{
+            margin-left: 5%;
+            width:80%;
+        }
+
+        .imgDiv{
+            float: right;
+            display: inline-flex;
+            height: 150px;
+            margin-top: -100px;
+        }
+
+        .newImg{
+            float:right;
+            height: 150px;
+        }
+
+        .button2{
+            font-size: 1.5rem;
+            margin-top: -2.2rem;
+            font-family: 'Josefin Sans', serif;
         }
 
     </style>
@@ -62,21 +129,81 @@
 <body>
 
     <div class="main_container">
-        <a href="/">
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="error-body" class="info">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Listing</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="new-modal-body" class="info">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="createNew" type="submit" class="btn btn-primary" data-dismiss="modal">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Listing</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modal-body" class="info">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="deleted" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="update" type="submit" class="btn btn-primary" data-dismiss="modal">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="header">
+        <a  id="titlecont" href="/">
             <div id="title">
-                <h1>WatchList</h1>      
+                WatchList.nyc
             </div> 
         </a>
-        <div id="info">
-            1) Enter username 
-            <br/>
-            2) Enter the ID number of the listing below and click "Update", or click "New Listing"
+
+
+        <div id="button_container">
+            <a href="/">
+                <div class="button2 btn btn-primary">
+                    Buying Watches?
+                </div>
+            </a>
         </div>
+    </div>
         <div id="box">
             <input id=username type="text" name="username" placeholder="Username"/>
-            <input id=number type="text" name="number" placeholder="ID Number"/>
-            <button id=button type="submit">Update</button>
-            <button id=new_listing type="submit">New Listing</button>
+            <button id=button type="submit">Login</button>
+            <button id=new_listing type="button">New Listing</button>
         </div>
 
         <div id="results">
