@@ -19,6 +19,7 @@
     <style>
         body{
             background-color: white;
+            padding: 50px;
         }
 
         #header{
@@ -80,6 +81,7 @@
 
         .info{
             text-align: center;
+            margin-top: -50px;
         }
         .info2{
             text-align: center;
@@ -108,6 +110,7 @@
         }
 
         .result{
+            height: 250px;
             margin-left: 15%;
             width: 70%;
             padding: 15px;
@@ -141,20 +144,24 @@
         }
 
         .details{
+            height: 200px;
             margin-left:5%;
             width:70%;
         }
 
         .imgDiv{
-            float: right;
-            display: inline-flex;
-            height: 150px;
-            margin-top: -140px;
+            width:50%;
+            margin-left: 50%;
+            display: flex;
+            justify-content: flex-end;
+            height: 230px;
+            margin-top: -250px;
         }
 
         .newImg{
-            float:right;
-            height: 150px;
+            display: flex;
+            height: 230px;
+            border-radius: 5px;
         }
 
         .button2{
@@ -225,7 +232,7 @@
         <div id="header">
             <a  id="titlecont" href="/">
                 <div id="title">
-                    <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> Suggestions & Ideas
+                    <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> <br/>Issues & Ideas
                 </div> 
             </a>
     
@@ -233,17 +240,17 @@
             <div id="button_container">
                 <a href="sell">
                     <div class="button2 btn btn-primary">
-                        Submit a suggestion!
+                        Submit a problem/suggestion!
                     </div>
                 </a>
             </div>
         </div>
         <div id="instruct">
-            Search through suggestions people have made.<br/>You can also click a suggestion to send a message to the writer.<br/>Click the number to the left of an entry to vote for it.
+            Search through submissions people have made.<br/>You can also click a submissions to send a message to the writer.<br/>Click the number to the left of an entry to vote for it.
         </div>
         <div id="search">
             <form action="/" method="get">
-                <input id=box type="text" name="term" placeholder="Enter query...">
+                <input id=box type="text" name="term" placeholder="Enter a query...">
                 <button id=button type="submit">Search</button>
             </form>
         </div>

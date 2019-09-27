@@ -20,7 +20,7 @@ $(document).ready(function(){
         if (msg != ""){
             $.ajax({
                 type: "POST",
-                url: "search",                
+                url: "",                
                 dataType : "json",
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify({"number": number, "msg": msg}),
@@ -59,6 +59,16 @@ $(document).ready(function(){
                 console.log(error)
             }
         })
+    })
+    $(".vote").mouseenter(function(){
+        if($(this).css("background-color") === "rgb(52, 124, 245)"){
+            $(this).css("background-color","#2B6AD3")
+        }  
+    })
+    $(".vote").mouseleave(function(){
+        if($(this).css("background-color") === "rgb(43, 106, 211)"){
+            $(this).css("background-color","#347CF5");
+        }
     })
 }
 )

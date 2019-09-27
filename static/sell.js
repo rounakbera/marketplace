@@ -36,7 +36,7 @@ var display_results = function(results){
             }
             toAdd += "<div class=imgDiv>"
             toAdd += "<img class=newImg src=" + result["img"] + ">"
-            toAdd += "</div>"
+            toAdd += "</div><div class=vote id=\"vote" + result["number"] + "\">" + result["votes"] + "</div>"
             toAdd += "</div><br/><button class='updated btn btn-primary' id=updated" + result["number"] + " type='button' data-toggle='modal' data-target='#updateModal'>Update</button><button class=deleted id=deleted" + result["number"] + " type=submit>Delete</button>"
             row.append(toAdd);
             $(row).hover(
@@ -144,7 +144,7 @@ var deleted = function(id){
             results = data
             number = -1
             $("#" + id).empty()
-            $("#" + id).append("<div class='result'><h3>Submission deleted</h3></div>")
+            $("#" + id).append("<h3>Submission deleted</h3>")
         },
         error: function(request, status, error){
             console.log("Error");

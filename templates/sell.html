@@ -18,7 +18,8 @@
 
     <style>
         body{
-            background-color: white
+            background-color: white;
+            padding: 50px;
         }
 
         #header{
@@ -84,7 +85,7 @@
 
         #username{
             margin: 0;
-            width: 100%;
+            width: 57%;
             float: left;
             border: 2px solid #347cf5;
             border-radius: 5px;
@@ -97,7 +98,7 @@
         }
 
         button{
-            margin: 10px;
+            margin-left: 5px;
             width: 20%;
             border-radius: 5px;
         }
@@ -153,6 +154,23 @@
             font-family: 'PT Sans', sans-serif;
             margin-bottom: -20px;
         }
+        .vote{
+            position: absolute;
+            left: 100px;
+            z-index: 20;
+            margin: 15px;
+            margin-top: -100px;
+            color: rgb(66, 66, 66);
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            background-color: black;
+            color:white;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
     </style>
 
 </head>
@@ -182,7 +200,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New Suggestion</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">New Submission</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -201,7 +219,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update Listing</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Update Submission</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -218,7 +236,7 @@
         <div id="header">
         <a  id="titlecont" href="/">
             <div id="title">
-                <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> Suggestions & Ideas
+                <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"><br/>Issues & Ideas
             </div> 
         </a>
 
@@ -226,18 +244,18 @@
         <div id="button_container">
             <a href="/">
                 <div class="button2 btn btn-primary">
-                    View suggestions!
+                    View submissions!
                 </div>
             </a>
         </div>
     </div>
     <div id="instruct">
-            Enter your previously used username or a new username below. <br/> You can click Login to get a list of past suggestions and update/delete them. </br> You can also click New Suggestion to submit a new idea.
+            Enter your previously used username or a new username below. <br/> Click "Login" to get a list of past submissions and update/delete them. </br> Click "New Submission" to enter a new submission.
         </div>
         <div id="box">
-            <input id=username type="text" name="username" placeholder="Username"/>
+            <input id=username type="text" name="username" placeholder="Enter a username..."/>
             <button id=button type="submit">Login</button>
-            <button id=new_listing type="button">New Suggestion</button>
+            <button id=new_listing type="button">New Submission</button>
         </div>
 
         <div id="results">
