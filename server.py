@@ -86,8 +86,9 @@ def search():
             with open('data.json', 'w') as f:
                 json.dump(watches, f)
             return json.dumps(allsearch(""))
-        elif jsons.get("login"):
+        elif jsons.get("login") != None:
             use = jsons.get("login")
+            print(use)
             if use in users and users[use]:
                 return jsonify({"login":True,"admin":True})
             elif use in users and not users[use]:
