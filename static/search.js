@@ -26,6 +26,8 @@ $(document).ready(function(){
     display_results(results)
     $("#loginButton").on('click', function(e){
         var username = $("#username").val();
+        console.log('login')
+        console.log(login)
         if (username != ""){
             $.ajax({
                 type: "POST",
