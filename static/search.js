@@ -36,6 +36,8 @@ $(document).ready(function(){
                 success: function(data){
                     if (data["login"]==true){
                         login = username
+                        console.log('login')
+                        console.log(login)
                         $("#login").html("Welcome, " + username)
                         $("#newsubmit").show()
                         $("#logoutButton").show()
