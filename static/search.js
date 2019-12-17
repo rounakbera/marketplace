@@ -40,9 +40,6 @@ $(document).ready(function(){
                         $("#newsubmit").show()
                         $("#logoutButton").show()
                     }
-                    else {
-                        alert("Invalid login")
-                    }
                     if (data["admin"]==true){
                         admin = true
                     }
