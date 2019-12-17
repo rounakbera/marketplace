@@ -17,6 +17,19 @@
     </script>
 
     <style>
+        #login{
+            position: fixed;
+            right: 0;
+            top: 35%;
+            width: 15%;
+        }
+        #newsubmit{
+            position: fixed;
+            right: 0;
+            top: 44%;
+            width: 15%;
+        }
+
         body{
             background-color: white;
             padding: 50px;
@@ -25,6 +38,7 @@
         #header{
             margin-top: 2.3rem;
             margin-bottom: -2.5rem;
+            text-align: center;
         }
         button{
             font-family: 'PT Sans', sans-serif;
@@ -51,13 +65,6 @@
             font-family: 'PT Sans', sans-serif; 
 		}
 
-        #titlecont{
-            display: inline-block;
-            width: 35%;
-            margin-left: 15%;
-            margin-top: 1rem;
-        }
-
         #title{
             font-family: 'Josefin Sans', serif;
             font-size: 3.5rem;
@@ -66,8 +73,7 @@
 
         #titlecont{
             display: inline-block;
-            width: 40%;
-            margin-left: 15%;
+            width: 70%;
             margin-top: 1rem;
         }
 
@@ -110,7 +116,8 @@
         }
 
         .result{
-            height: 250px;
+
+            /* height: 250px;
             margin-left: 15%;
             width: 70%;
             padding: 15px;
@@ -118,7 +125,38 @@
             border-radius: 10px;
             margin-bottom: 10px;
             padding-bottom: 50px;
-            background-color: #fff2e0;
+            background-color: #fff2e0; */
+        }
+
+        .card{
+            margin: auto;
+            transition: 0.5s;
+            z-index: 100;
+        }
+
+        .card-img-top{
+            height: 250px;
+        }
+
+        .card-title{
+            height: 40px;
+            margin-bottom: 20px;
+        }
+
+        .card-text{
+            white-space: nowrap; 
+            height: 30px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #results{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            grid-column-gap: 25px;
+            grid-row-gap: 25px;
+            width: 70%;
+            margin-left: 15%;
         }
 
         #modal{
@@ -176,22 +214,22 @@
         #instruct{
             border-radius: 10px;
             text-align: center;
-            margin-left: 25%;
-            margin-top: 60px;
-            width: 50%;
+            width: 15%;
             padding: 20px;
             background-color: #347CF5;
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-family: 'PT Sans', sans-serif;
-            margin-bottom: -20px;
+            position: fixed;
+            left: 0;
+            top:30%;
         }
         .vote{
-            position: absolute;
-            left: 100px;
+            /* position: absolute;
+            left: 100px; */
             z-index: 20;
-            margin: 15px;
-            margin-top: -150px;
+            /* margin: 15px;
+            margin-top: -150px; */
             color: rgb(66, 66, 66);
             font-size: 2rem;
             width: 60px;
@@ -202,51 +240,201 @@
             color:white;
             transition: all 0.3s ease;
             border-radius: 10px;
+            float: right;
+        }
+        #view-modal-body{
+            height: 50vh;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        #viewText{
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 1rem;
+            color: white;
+            overflow: hidden;
+        }
+        #edit-modal-body{
+            height: 50vh;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 20;
+        }
+        #editTitle{
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 300;
+            width: 100%;
+        }
+        #editDesc{
+            margin-bottom: 10px;
+            width: 100%;
+            height: 4rem;
+        }
+        #editImg{
+            width: 75%;
+        }
+        #edit-modal-body2{
+            height: 50vh;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 20;
+        }
+        #editTitle2{
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 300;
+            width: 100%;
+        }
+        #editDesc2{
+            margin-bottom: 10px;
+            width: 100%;
+            height: 4rem;
+        }
+        #editImg2{
+            width: 75%;
+        }
+        #updateImg{
+            width: 22%;
+            float: right;
+        }
+        .edit{
+            z-index: 1000;
+            margin-left: 5px;
+        }
+        #viewComments{
+            height:50vh;
+            overflow: scroll;
+        }
+        .admin{
+            color: darkorange;
+        }
+        .comment{
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin: 0.5rem;
+            overflow: hidden;
         }
     </style>
 
 </head>
 
 <body>
-
-    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Send a message to the suggester</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="display: block;">
+                    <h3 class="modal-title" id="viewTitle"></h3>
+                    <h7 id="viewDesc"></h7>
+                </div>
+                <div id="view-modal-body">
+                    <div class="container">
+                        <div class="row" style="height: 50vh; overflow:hidden">
+                            <div class="col-sm">
+                            </div>
+                            <div id="viewText" class="col-sm">
+                                <div id="viewComments">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="new-modal-body">
-                            <textarea id='msg' type='text' name='email'></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="send" type="submit" class="btn btn-primary" data-dismiss="modal">Send</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <textarea id='msg' type='text' name='email' placeholder="Leave a comment!"></textarea>
+                    <button id="send" type="submit" class="btn btn-primary" data-dismiss="modal">Send</button>
+                    <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="display: block;">
+                    <input class="modal-title" id="editTitle"/>
+                    <textarea id="editDesc"></textarea>
+                    <input id="editImg"/>
+                    <button id="updateImg">Update</button>
+                </div>
+                <div id="edit-modal-body">
+                    <div class="container">
+                        <div class="row" style="height: 50vh; overflow:hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="save" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    <button id="delete" type="submit" class="btn btn-primary" data-dismiss="modal">Delete</button>
+                    <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="newModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="display: block;">
+                    <input class="modal-title" id="editTitle2" placeholder="Enter your title!"/>
+                    <textarea id="editDesc2">Enter a description!</textarea>
+                    <input id="editImg2" value="Enter your image URL!"/>
+                    <button id="updateImg2">Update</button>
+                </div>
+                <div id="edit-modal-body2">
+                    <div class="container">
+                        <div class="row" style="height: 50vh; overflow:hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="save2" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="logModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logModal">Enter your username below.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="new-modal-body" style="text-align: center;">
+                        <input id='username' value="Rounak" type='text' name='email'></input>
+                </div>
+                <div class="modal-footer">
+                    <button id="loginButton" type="submit" class="btn btn-primary" data-dismiss="modal">Login</button>
+                    <button id="logoutButton" type="submit" class="btn btn-primary" data-dismiss="modal">Logout</button>
+                    <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="main_container">
         <div id="header">
             <a  id="titlecont" href="/">
                 <div id="title">
-                    <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> <br/>Issues & Ideas
+                    <img style="width: 300px;" src="https://www.columbiaspectator.com/pb/resources/img/spectator-logo.png"> <br/>Project Lede
                 </div> 
             </a>
     
     
             <div id="button_container">
-                <a href="sell">
-                    <div class="button2 btn btn-primary">
-                        Submit a problem/suggestion!
-                    </div>
-                </a>
+                <div id="login" data-toggle="modal" data-target="#loginModal" class="button2 btn btn-primary">
+                    Login!
+                </div>
+                <div id="newsubmit" data-toggle="modal" data-target="#newModal" class="button2 btn btn-primary">
+                    New submission
+                </div>
             </div>
         </div>
         <div id="instruct">
-            Search through submissions people have made.<br/>Click a submission to send a message to the writer.<br/>Click the number to the left of an entry to vote for that entry.
+            <b style="font-size: 1.5rem; font-family: 'Josefin Sans';">Instructions</b><br/><br/>Filter through submissions people have made with the search bar.<br/><br/>Click the number on an entry to vote for it.<br/><br/>Click a submission to view it in greater detail or leave a comment if you're logged in.
         </div>
         <div id="search">
             <form action="/" method="get">
