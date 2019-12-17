@@ -29,6 +29,7 @@ def search():
     term = request.args.get('term', None)
     jsons = request.get_json()
     if jsons != None:
+        print(jsons)
         with open('data.json') as f:
             watches = json.load(f)
         if jsons.get("votes") != None:
@@ -40,6 +41,7 @@ def search():
                 json.dump(watches, f)
             return json.dumps(allsearch(""))
         elif jsons.get("msg") != None:
+            print(jsons.get("msg"))
             num = int(jsons.get("number"))
             for w in watches:
                 if w["number"] == num:
@@ -49,6 +51,7 @@ def search():
                         w["messages"].append(jsons.get("msg"))
             with open('data.json', 'w') as f:
                 json.dump(watches, f)
+            print(watches)
             return json.dumps(allsearch(""))
         elif jsons.get("edit") != None:
             num = int(jsons.get("number"))

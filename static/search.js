@@ -71,6 +71,7 @@ $(document).ready(function(){
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify({"edit": "true","number":number,"model":title,"movement":desc,"price":img}),
                 success: function(data){
+                    results = data
                     display_results(data)
                 },
                 error: function(request, status, error){
@@ -134,6 +135,30 @@ $(document).ready(function(){
         display_results(results)
     }
     )
+    $("#send").on('click',function(e){
+        msg = $("#msg").val()
+        if (msg != ""){
+            $.ajax({
+                type: "POST",
+                url: "",                
+                dataType : "json",
+                contentType: "application/json; charset=utf-8",
+                data : JSON.stringify({"number":number,"msg": {"msg":msg,"user":login,"admin":admin}}),
+                success: function(data){
+                    results = data
+                    display_results(data)
+                    loadComments(number)
+                },
+                error: function(request, status, error){
+                    console.log("Error");
+                    console.log(request)
+                    console.log(status)
+                    console.log(error)
+                }
+            })
+        }
+    }
+    )
 }
 )
 
@@ -150,7 +175,7 @@ var loadComments = function(id){
     for (let i in res["messages"]){
         console.log(res["messages"][i])
         if(res["messages"][i]["admin"]){
-            toAdd="<div class='comment'><h5 class='admin'>" + res["messages"][i]["user"] + "</h5>"
+            toAdd="<div class='comment'><h5 class='admin'>" + res["messages"][i]["user"] + " (Spec)</h5>"
         }
         else{
             toAdd="<div class='comment'><h6>" + res["messages"][i]["user"] + "</h6>"
@@ -236,6 +261,7 @@ var display_results = function(results){
                     return;
                 }
                 var cardID = parseInt(this.id)
+                number = cardID
                 var res = null
                 for (let i in results){
                     if(results[i]["number"] === cardID){
@@ -329,7 +355,7 @@ var display_results = function(results){
             )
             $("#updateImg2").on('click', function(e){
                 var imgurl = "url(" + $('#editImg').val() + ")"
-                $('#new-modal-body').css("background-image", imgurl)
+                $('#edit-modal-body2').css("background-image", imgurl)
             }
             )
         }
